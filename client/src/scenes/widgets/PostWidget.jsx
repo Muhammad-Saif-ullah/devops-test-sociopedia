@@ -4,7 +4,15 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputBase,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -24,9 +32,12 @@ const PostWidget = ({
   comments,
 }) => {
   const [isComments, setIsComments] = useState(false);
+  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUsername = useSelector((state) => state.user.firstName + " " + state.user.lastName);
+  const userlg = useSelector((state) => state.user);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 
@@ -35,16 +46,40 @@ const PostWidget = ({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}/like`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      }
+    );
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
+  };
+
+  const handleNewComment = async () => {
+    console.log(loggedInUsername);
+    console.log(userlg);
+
+    const newComment = `${comment}-${loggedInUsername}`;
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}/comment`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment: newComment, userId: loggedInUserId }),
+      }
+    );
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
+    setComment("");
   };
 
   return (
@@ -54,6 +89,7 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
+        postId={postId}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -64,7 +100,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`${process.env.REACT_APP_BACKEND_URL}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -93,17 +129,48 @@ const PostWidget = ({
         </IconButton>
       </FlexBetween>
       {isComments && (
-        <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
-          <Divider />
-        </Box>
+        <>
+          <Box mt="0.5rem">
+            {comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment.split("-")[0]} <b> - {comment.split("-")[1]}</b>
+                </Typography>
+              </Box>
+            ))}
+            <Divider />
+          </Box>
+          <Box mt="0.5rem">
+            <FlexBetween>
+              <InputBase
+                placeholder="Add a comment..."
+                onChange={(e) => setComment(e.target.value)}
+                value={comment}
+                sx={{
+                  width: "100%",
+                  backgroundColor: palette.neutral.light,
+                  borderRadius: "2rem",
+                  padding: "0.5rem 2rem",
+                  margin: "0rem 0.5rem",
+                }}
+              />
+              <Button
+                disabled={!comment}
+                onClick={handleNewComment}
+                sx={{
+                  color: palette.background.alt,
+                  backgroundColor: palette.primary.main,
+                  borderRadius: "3rem",
+                  padding: "0.5rem 2rem",
+                  textTransform: "none",
+                }}
+              >
+                Comment
+              </Button>
+            </FlexBetween>
+          </Box>
+        </>
       )}
     </WidgetWrapper>
   );

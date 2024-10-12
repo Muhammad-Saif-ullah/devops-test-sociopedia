@@ -38,10 +38,10 @@ export const authSlice = createSlice({
         return post;
       });
       state.posts = updatedPosts;
-    },
+    }
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
+export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, deletePost } =
   authSlice.actions;
 export default authSlice.reducer;

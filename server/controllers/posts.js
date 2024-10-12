@@ -29,7 +29,11 @@ export const createPost = async (req, res) => {
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find();
+    const post = await Post.find(
+      {},
+      null,
+      { sort: { createdAt: -1 } }
+    );
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -67,6 +71,42 @@ export const likePost = async (req, res) => {
     );
 
     res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+export const commentPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { comment } = req.body;
+    const post = await Post.findById(postId);
+    post.comments.push(comment);
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { comments: post.comments },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const deletedPost = await Post.findByIdAndDelete(postId);
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const updatedPosts = await Post.find();
+    res.status(200).json(
+      updatedPosts
+    );
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

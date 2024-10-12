@@ -1,12 +1,12 @@
-import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
+import { ClearOutlined, PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriends } from "state";
+import { setFriends, setPost, setPosts } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
@@ -23,7 +23,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
+      `${process.env.REACT_APP_BACKEND_URL}/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
@@ -34,6 +34,25 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
+  };
+
+  const deletePostHandler = async () => {
+    if (!window.confirm("Are you sure you want to delete this post?")) {
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const posts = await response.json();
+    dispatch(setPosts({ posts }));
   };
 
   return (
@@ -64,7 +83,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
+      {
+        _id !== friendId &&
+        <IconButton
         onClick={() => patchFriend()}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
@@ -74,6 +95,18 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           <PersonAddOutlined sx={{ color: primaryDark }} />
         )}
       </IconButton>
+      }
+      {
+        // select menu for delete post in case the user is the owner of the post
+        _id === friendId && (
+          <IconButton
+            onClick={deletePostHandler}
+            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          >
+            <ClearOutlined sx={{ color: primaryDark }} />
+          </IconButton>
+        )
+      }
     </FlexBetween>
   );
 };

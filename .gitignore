@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+
+# Build output
+/build/
+
+# Environment variables
+.env
+*.env
+
+# Logs
+*.log
+
+# Cache
+/.cache/
+
+# IDE/editor configuration
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+/bower_components/
+/client/node_modules/
+/server/node_modules/
