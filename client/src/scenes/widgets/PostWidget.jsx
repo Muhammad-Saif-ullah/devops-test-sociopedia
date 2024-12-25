@@ -83,7 +83,7 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="2rem 0" className="single-post">
       <Friend
         friendId={postUserId}
         name={name}
@@ -91,7 +91,7 @@ const PostWidget = ({
         userPicturePath={userPicturePath}
         postId={postId}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Typography color={main} sx={{ mt: "1rem" }} className="post-description">
         {description}
       </Typography>
       {picturePath && (
@@ -106,7 +106,7 @@ const PostWidget = ({
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
+            <IconButton onClick={patchLike} className="like-button">
               {isLiked ? (
                 <FavoriteOutlined sx={{ color: primary }} />
               ) : (
@@ -130,7 +130,7 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <>
-          <Box mt="0.5rem">
+          <Box mt="0.5rem" className="all-post-comments">
             {comments.map((comment, i) => (
               <Box key={`${name}-${i}`}>
                 <Divider />
@@ -165,6 +165,7 @@ const PostWidget = ({
                   padding: "0.5rem 2rem",
                   textTransform: "none",
                 }}
+                className="add-comment-button"
               >
                 Comment
               </Button>
