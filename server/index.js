@@ -21,7 +21,7 @@ import { users, posts } from "./data/index.js";
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, 'config/config.env') })
+dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -44,7 +44,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
+// app.post("/auth/register", upload.single("picture"), register);
+app.post("/auth/register", register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 /* ROUTES */
@@ -60,6 +61,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
+    console.log("Connected to MongoDB");
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
     /* ADD DATA ONE TIME */

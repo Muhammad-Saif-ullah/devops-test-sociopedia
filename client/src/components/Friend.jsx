@@ -56,7 +56,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
   };
 
   return (
-    <FlexBetween>
+    <FlexBetween className="each-friend">
       <FlexBetween gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
         <Box
@@ -75,6 +75,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
                 cursor: "pointer",
               },
             }}
+            className="single-name-friend"
           >
             {name}
           </Typography>
@@ -88,6 +89,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
         <IconButton
         onClick={() => patchFriend()}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        className="toggle-friend-button"
       >
         {isFriend ? (
           <PersonRemoveOutlined sx={{ color: primaryDark }} />
@@ -102,6 +104,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
           <IconButton
             onClick={deletePostHandler}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+            className="delete-post-button"
           >
             <ClearOutlined sx={{ color: primaryDark }} />
           </IconButton>
