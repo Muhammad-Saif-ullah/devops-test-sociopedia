@@ -5,6 +5,8 @@ services:
       - "3000:3000"
     networks:
       - sociopedia-network
+    env_file:
+      - ./client/.env
     depends_on:
       - backend
 
@@ -12,6 +14,8 @@ services:
     build: ./server
     ports:
       - "3001:3001"
+    env_file:
+      - ./server/.env
     environment:
       MONGO_URL: mongodb://db:27017/sociopedia
     networks:
