@@ -20,7 +20,11 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src={`${process.env.REACT_APP_BACKEND_URL}/assets/info4.jpeg`}
+        src={
+          // `${process.env.REACT_APP_BACKEND_URL}assets/info4.jpeg`
+          `http://192.168.49.2:31231/assets/info4.jpeg`
+          // new URL("assets/info4.jpeg", process.env.REACT_APP_BACKEND_URL)
+        }
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>

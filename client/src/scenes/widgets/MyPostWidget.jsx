@@ -46,7 +46,11 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/posts`, {
+    const response = await fetch(
+      // `${process.env.REACT_APP_BACKEND_URL}posts`
+      `http://192.168.49.2:31231/posts`
+      // new URL("posts", process.env.REACT_APP_BACKEND_URL)
+      , {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

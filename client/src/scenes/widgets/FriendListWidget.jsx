@@ -13,7 +13,9 @@ const FriendListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/users/${userId}/friends`,
+      // `${process.env.REACT_APP_BACKEND_URL}users/${userId}/friends`,
+      `http://192.168.49.2:31231/users/${userId}/friends`,
+      // new URL(`users/${userId}/friends`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

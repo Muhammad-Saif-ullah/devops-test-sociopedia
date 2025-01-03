@@ -67,7 +67,9 @@ const Form = () => {
     // console.log(formData);
 
     const savedUserResponse = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
+      // `${process.env.REACT_APP_BACKEND_URL}auth/register`,
+      `http://192.168.49.2:31231/auth/register`,
+      // new URL("auth/register", process.env.REACT_APP_BACKEND_URL),
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -91,7 +93,11 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
+    const loggedInResponse = await fetch(
+      // `${process.env.REACT_APP_BACKEND_URL}auth/login`, 
+      `http://192.168.49.2:31231/auth/login`, 
+      // new URL("auth/login", process.env.REACT_APP_BACKEND_URL),
+      {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

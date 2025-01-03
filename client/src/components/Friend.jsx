@@ -23,7 +23,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/users/${_id}/${friendId}`,
+      // `${process.env.REACT_APP_BACKEND_URL}users/${_id}/${friendId}`,
+      `http://192.168.49.2:31231/users/${_id}/${friendId}`,
+      // new URL(`users/${_id}/${friendId}`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "PATCH",
         headers: {
@@ -42,7 +44,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
     }
 
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}`,
+      // `${process.env.REACT_APP_BACKEND_URL}posts/${postId}`,
+      `http://192.168.49.2:31231/posts/${postId}`,
+      // new URL(`posts/${postId}`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "DELETE",
         headers: {

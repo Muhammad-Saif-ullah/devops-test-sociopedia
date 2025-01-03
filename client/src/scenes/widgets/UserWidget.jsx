@@ -22,7 +22,11 @@ const UserWidget = ({ userId, picturePath }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}`, {
+    const response = await fetch(
+      // `${process.env.REACT_APP_BACKEND_URL}users/${userId}`
+      `http://192.168.49.2:31231/users/${userId}`
+      // new URL(`users/${userId}`, process.env.REACT_APP_BACKEND_URL)
+      , {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

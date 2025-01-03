@@ -47,7 +47,9 @@ const PostWidget = ({
 
   const patchLike = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}/like`,
+      // `${process.env.REACT_APP_BACKEND_URL}posts/${postId}/like`,
+      `http://192.168.49.2:31231/posts/${postId}/like`,
+      // new URL(`posts/${postId}/like`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "PATCH",
         headers: {
@@ -67,7 +69,9 @@ const PostWidget = ({
 
     const newComment = `${comment}-${loggedInUsername}`;
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}/comment`,
+      // `${process.env.REACT_APP_BACKEND_URL}posts/${postId}/comment`,
+      `http://192.168.49.2:31231/posts/${postId}/comment`,
+      // new URL(`posts/${postId}/comment`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "PATCH",
         headers: {
@@ -100,7 +104,11 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`${process.env.REACT_APP_BACKEND_URL}/assets/${picturePath}`}
+          src={
+            // `${process.env.REACT_APP_BACKEND_URL}assets/${picturePath}`
+            `http://192.168.49.2:31231/assets/${picturePath}`
+            // new URL(`assets/${picturePath}`, process.env.REACT_APP_BACKEND_URL)
+          }
         />
       )}
       <FlexBetween mt="0.25rem">

@@ -9,7 +9,11 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/posts`, {
+    const response = await fetch(
+      // `${process.env.REACT_APP_BACKEND_URL}posts`, 
+      `http://192.168.49.2:31231/posts`, 
+      // new URL("posts", process.env.REACT_APP_BACKEND_URL),      
+      {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -19,7 +23,9 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/posts/${userId}/posts`,
+      // `${process.env.REACT_APP_BACKEND_URL}posts/${userId}/posts`,
+      `http://192.168.49.2:31231/posts/${userId}/posts`,
+      // new URL(`posts/${userId}/posts`, process.env.REACT_APP_BACKEND_URL),
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

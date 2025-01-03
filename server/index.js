@@ -29,7 +29,15 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
@@ -47,6 +55,9 @@ const upload = multer({ storage });
 // app.post("/auth/register", upload.single("picture"), register);
 app.post("/auth/register", register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.get("/", (req, res) => {
+  res.send("Backend API is running");
+});
 
 /* ROUTES */
 app.use("/auth", authRoutes);
